@@ -38,6 +38,7 @@ function App() {
       <Pagination
         pageSize={pageSize}
         itemsCount={albums.length}
+        currentPage={currentPage}
         onHandleChange={onHandleChange}
       />
     </div>
