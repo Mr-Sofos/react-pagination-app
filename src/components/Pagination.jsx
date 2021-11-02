@@ -1,28 +1,23 @@
 import React from "react";
+import _ from "lodash";
 
-const Pagination = ({ albumsPerPage, totalAlbums, onHandleChange }) => {
-  const pageNumbers = [];
-
-  for (let i = 1; i <= Math.ceil(totalAlbums / albumsPerPage); i++) {
-    pageNumbers.push(i);
-  }
+const Pagination = ({ pageSize, itemsCount, onHandleChange }) => {
+  const pageCount = Math.ceil(itemsCount / pageSize);
+  const pages = _.range(1, pageCount + 1);
+  console.log(pages);
 
   return (
-    <div>
+    <nav>
       <ul className="pagination">
-        {pageNumbers.map((number) => (
-          <li key={number} className="page-item">
-            <a
-              href="#/"
-              className="page-link"
-              onClick={() => onHandleChange(number)}
-            >
-              {number}
+        {pages.map((page) => (
+          <li key={page} className="page-item">
+            <a className="page-link" onClick={() => onHandleChange(page)}>
+              {page}
             </a>
           </li>
         ))}
       </ul>
-    </div>
+    </nav>
   );
 };
 

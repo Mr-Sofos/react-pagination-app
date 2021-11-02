@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { paginate } from "./utils/paginate";
 
 import Albums from "./components/Albums";
 import Pagination from "./components/Pagination";
@@ -7,8 +8,8 @@ import Pagination from "./components/Pagination";
 function App() {
   const [albums, setAlbums] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(2);
-  const [albumsPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize] = useState(10);
 
   useEffect(() => {
     const getCountries = async () => {
@@ -22,20 +23,21 @@ function App() {
     getCountries();
   }, []);
 
-  const lastAlbumsIndex = currentPage * albumsPerPage; // 20
-  const firstAlbumsIndex = lastAlbumsIndex - albumsPerPage; // 20 - 10 = 10
-  const currentAlbum = albums.slice(firstAlbumsIndex, lastAlbumsIndex);
-  console.log(currentAlbum);
+  const allAlbums = paginate(albums, currentPage, pageSize);
+
+  // const lastAlbumsIndex = currentPage * pageSize;
+  // const firstAlbumsIndex = lastAlbumsIndex - pageSize;
+  // const currentAlbum = albums.slice(firstAlbumsIndex, lastAlbumsIndex);
 
   const onHandleChange = (number) => setCurrentPage(number);
 
   return (
     <div className="container mt-5">
       <h1 className="text-primary">Albums</h1>
-      <Albums albums={currentAlbum} loading={loading} />
+      <Albums albums={allAlbums} loading={loading} />
       <Pagination
-        albumsPerPage={albumsPerPage}
-        totalAlbums={albums.length}
+        pageSize={pageSize}
+        itemsCount={albums.length}
         onHandleChange={onHandleChange}
       />
     </div>
